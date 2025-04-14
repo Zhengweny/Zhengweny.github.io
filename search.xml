@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>hadoop集群部署</title>
+      <link href="/posts/20250414/"/>
+      <url>/posts/20250414/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/%5Cimages%5Cposts%5C2025%5C04-14-Hadoop%5C%E6%B5%8B%E8%AF%95.png" alt="测试"></p><h1 id="前提：机器规划情况"><a href="#前提：机器规划情况" class="headerlink" title="前提：机器规划情况"></a><strong>前提：机器规划情况</strong></h1><p>hadoop各组件下载情况：<a href="https://archive.apache.org/dist/">https://archive.apache.org/dist/</a></p><table><thead><tr><th>主机IP</th><th>主机名</th><th>部署内容</th><th>角色</th></tr></thead><tbody><tr><td>192.168.131.67</td><td>131_67</td><td></td><td>master</td></tr><tr><td>192.168.131.68</td><td>131_68</td><td></td><td>slave01</td></tr><tr><td>192.168.131.69</td><td>131_69</td><td></td><td>slave02</td></tr><tr><td>192.168.131.70</td><td>131_70</td><td></td><td>slave03</td></tr></tbody></table><h1 id="一、环境检查："><a href="#一、环境检查：" class="headerlink" title="一、环境检查："></a><strong>一、环境检查：</strong></h1><p>1、防火墙关闭：systemctl stop firewalld</p><p>2、selinux关闭：sed -i ‘s&#x2F;SELINUX&#x3D;enforcing&#x2F;SELINUX&#x3D;disabled&#x2F;‘ &#x2F;etc&#x2F;selinux&#x2F;config</p><p>3、每台集群节点配置&#x2F;etc&#x2F;hosts文件映射</p><p>192.168.131.67 master 192.168.131.68 slave01 192.168.131.69 slave02 192.168.131.70 slave03</p><h1 id="二、安装jdk"><a href="#二、安装jdk" class="headerlink" title="二、安装jdk"></a><strong>二、安装jdk</strong></h1><p>参见部署类——jdk下载及安装 </p><h1 id="三、解压安装hadoop-（尝试用普通用户admin部署）"><a href="#三、解压安装hadoop-（尝试用普通用户admin部署）" class="headerlink" title="三、解压安装hadoop （尝试用普通用户admin部署）"></a><strong>三、解压安装hadoop （尝试用普通用户admin部署）</strong></h1><p>安装配置完一台，其它的scp过去即可</p><p>mkdir &#x2F;data   (root建完&#x2F;data，chown -R admin.admin &#x2F;data 全部授权给普通用户admin) tar zvxf hadoop-2.7.3.tar.gz -C &#x2F;data</p><h1 id="四、配置hadoop的6个配置文件"><a href="#四、配置hadoop的6个配置文件" class="headerlink" title="四、配置hadoop的6个配置文件"></a><strong>四、配置hadoop的6个配置文件</strong></h1><table><thead><tr><th>配置文件</th><th>用途</th><th>配置文件中加入或修改</th></tr></thead><tbody><tr><td>hadoop-env.sh</td><td>hadoop环境变量定义</td><td>export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;jdk1.8.0_231export HDFS_NAMENODE_USER&#x3D;”admin”export HDFS_DATANODE_USER&#x3D;”admin”export  HDFS_SECONDARYNAMENODE_USER&#x3D;”admin”export  YARN_RESOURCEMANAGER_USER&#x3D;”admin”export  YARN_NODEMANAGER_USER&#x3D;”admin”</td></tr><tr><td>core-site.xml</td><td>核心配置文件</td><td><strong>1、创建存放临时数据的公共目录：&#x2F;data&#x2F;hadoop-2.7.3&#x2F;tmp</strong>2、属性1：定义角色  #为一组属性     属性2：定义数据存放目录</td></tr><tr><td>hdfs-site.xml</td><td>副本数及web访问定义</td><td>1、副本数定义：hdfs副本数，表示可以存多少份相同的数据，有几个从节点就配置几个2、web端访问地址配置</td></tr><tr><td>yarn-site.xml</td><td>指定resourcemanager</td><td>1、nodemanager获取数据的方式：混洗方式shuffle2、指定<strong>yarn的老大也就是resourcemanager</strong>3、环境变量继承4、关闭虚拟内存检查，开启检查时，虚拟内存不足会导致nodemanager的自杀</td></tr><tr><td>mapred-site.xml</td><td>yarn是mapreduce的第二代，用于资源计算</td><td>指定MapReduce运行在YARN上</td></tr><tr><td>slaves（3.0之后叫workers）</td><td>指定从节点</td><td>指定从节点</td></tr></tbody></table>]]></content>
+      
+      
+      <categories>
+          
+          <category> 部署 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+            <tag> xx </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
